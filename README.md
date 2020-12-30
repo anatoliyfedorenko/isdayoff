@@ -11,7 +11,7 @@ root if it already is):
 go mod init
 ```
 
-Then, reference stripe-go in a Go program with `import`:
+Then, reference isdayoff module in a Go program with `import`:
 
 ``` go
 import (
