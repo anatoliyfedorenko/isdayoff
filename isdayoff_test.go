@@ -31,7 +31,7 @@ func TestGetByDay(t *testing.T) {
 	client := New()
 	month := time.January
 	day := 1
-	countryCode := CountryCodeKZ
+	countryCode := CountryCodeKazakhstan
 	pre := false
 	covid := false
 	days, err := client.GetBy(Params{

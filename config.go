@@ -4,14 +4,20 @@ package isdayoff
 type CountryCode string
 
 const (
-	// CountryCodeBY BY
-	CountryCodeBY CountryCode = "by"
-	// CountryCodeKZ KZ
-	CountryCodeKZ CountryCode = "kz"
-	// CountryCodeRU RU
-	CountryCodeRU CountryCode = "ru"
-	// CountryCodeUA UA
-	CountryCodeUA CountryCode = "ua"
+	// CountryCodeBelarus BY
+	CountryCodeBelarus CountryCode = "by"
+	// CountryCodeKazakhstan KZ
+	CountryCodeKazakhstan CountryCode = "kz"
+	// CountryCodeRussia RU
+	CountryCodeRussia CountryCode = "ru"
+	// CountryCodeUkraine UA
+	CountryCodeUkraine CountryCode = "ua"
+	// CountryCodeUSA USA
+	CountryCodeUSA CountryCode = "us"
+	// CountryCodeUzbekistan Uz
+	CountryCodeUzbekistan CountryCode = "uz"
+	// CountryCodeTurkey Turkey
+	CountryCodeTurkey CountryCode = "tr"
 )
 
 // DayType type
