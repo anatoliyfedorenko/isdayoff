@@ -2,7 +2,7 @@
 
 Requests for [Isdayoff API](https://isdayoff.ru/)
 
-## Установка
+## Install
 
 Make sure your project is using Go Modules (it will have a `go.mod` file in its
 root if it already is):
