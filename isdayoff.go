@@ -44,6 +44,11 @@ func (c *Client) IsLeap(year int) (bool, error) {
 	return YearType(string(body)) == YearTypeLeap, nil
 }
 
+var boolToInt = map[bool]int{
+	false: 0,
+	true:  1,
+}
+
 // Params параметры запроса
 type Params struct {
 	Year        int
@@ -59,19 +64,27 @@ type Params struct {
 func (c *Client) GetBy(params Params) ([]DayType, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?year=%d", params.Year)
 	if params.Month != nil {
-		url += fmt.Sprintf("&month=%v", *params.Month)
+		if *params.Month < 10 {
+			url += fmt.Sprintf("&month=0%d", *params.Month)
+		} else {
+			url += fmt.Sprintf("&month=%d", *params.Month)
+		}
 	}
 	if params.Day != nil {
-		url += fmt.Sprintf("&day%v", *params.Day)
+		if *params.Day < 10 {
+			url += fmt.Sprintf("&day=0%d", *params.Day)
+		} else {
+			url += fmt.Sprintf("&day=%d", *params.Day)
+		}
 	}
 	if params.CountryCode != nil {
 		url += fmt.Sprintf("&cc=%v", *params.CountryCode)
 	}
 	if params.Pre != nil {
-		url += fmt.Sprintf("&pre=%v", *params.Pre)
+		url += fmt.Sprintf("&pre=%d", boolToInt[*params.Pre])
 	}
 	if params.Covid != nil {
-		url += fmt.Sprintf("&covid=%v", *params.Covid)
+		url += fmt.Sprintf("&covid=%d", boolToInt[*params.Covid])
 	}
 	method := "GET"
 	req, err := http.NewRequest(method, url, nil)
