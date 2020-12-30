@@ -1,13 +1,12 @@
 package isdayoff
 
 import (
-	"net/http"
 	"testing"
 	"time"
 )
 
 func TestIsLeap(t *testing.T) {
-	client := New(http.DefaultClient)
+	client := New()
 	leap, err := client.IsLeap(2020)
 	if err != nil {
 		t.Error(err)
@@ -18,7 +17,7 @@ func TestIsLeap(t *testing.T) {
 }
 
 func TestGetByYear(t *testing.T) {
-	client := New(http.DefaultClient)
+	client := New()
 	days, err := client.GetBy(Params{Year: 2020})
 	if err != nil {
 		t.Error(err)
@@ -29,7 +28,7 @@ func TestGetByYear(t *testing.T) {
 }
 
 func TestGetByDay(t *testing.T) {
-	client := New(http.DefaultClient)
+	client := New()
 	month := time.January
 	day := 1
 	countryCode := CountryCodeKZ

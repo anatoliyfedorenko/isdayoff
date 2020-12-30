@@ -28,5 +28,5 @@ Alternatively, you can also explicitly `go get` the package into a project:
 go get -u github.com/anatoliyfedorenko/isdayoff
 ```
 
-## TODO
-- Add timezones. Note: TX names should be taken from [IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)
+## Note: 
+- TZ names should be taken from [IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)

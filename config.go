@@ -1,47 +1,47 @@
 package isdayoff
 
-// CountryCode Коды стран
+// CountryCode type
 type CountryCode string
 
 const (
-	// CountryCodeBY Белорусь
+	// CountryCodeBY BY
 	CountryCodeBY CountryCode = "by"
-	// CountryCodeKZ Казахстан
+	// CountryCodeKZ KZ
 	CountryCodeKZ CountryCode = "kz"
-	// CountryCodeRU Россия
+	// CountryCodeRU RU
 	CountryCodeRU CountryCode = "ru"
-	// CountryCodeUA Украина
+	// CountryCodeUA UA
 	CountryCodeUA CountryCode = "ua"
 )
 
-// DayType тип дня
+// DayType type
 type DayType string
 
-// YearType тип года
+// YearType type
 type YearType string
 
-// ErrorCode код ошибки
+// ErrorCode type
 type ErrorCode string
 
 const (
-	// DayTypeWorking Рабочий день
+	// DayTypeWorking working day
 	DayTypeWorking DayType = "0"
-	// DayTypeNonWorking Нерабочий день
+	// DayTypeNonWorking non working day
 	DayTypeNonWorking DayType = "1"
-	// DayTypeHaldHoliday Сокращённый рабочий день
+	// DayTypeHaldHoliday half holiday
 	DayTypeHaldHoliday DayType = "2"
-	// DayTypeWorkingCovid Рабочий день (Covid)
+	// DayTypeWorkingCovid working day for Covid
 	DayTypeWorkingCovid DayType = "4"
 
-	// YearTypeNotLeap Невисокосный год
+	// YearTypeNotLeap leap year
 	YearTypeNotLeap YearType = "0"
-	// YearTypeLeap Високосный год
+	// YearTypeLeap non leap year
 	YearTypeLeap YearType = "1"
 
-	// ErrorCodeWrongDate Ошибка в дате
+	// ErrorCodeWrongDate wrong date err
 	ErrorCodeWrongDate ErrorCode = "100"
-	// ErrorCodeNotFound Данные не найдены
+	// ErrorCodeNotFound not found err
 	ErrorCodeNotFound ErrorCode = "101"
-	// ErrorCodeInternalError Ошибка сервиса
+	// ErrorCodeInternalError internal error
 	ErrorCodeInternalError ErrorCode = "199"
 )

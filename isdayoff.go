@@ -8,17 +8,22 @@ import (
 	"time"
 )
 
-// Client клиент для запросов в isdayoff.ru
+// Client for requests to isdayoff.ru
 type Client struct {
-	*http.Client
+	httpClient *http.Client
 }
 
-// New ...
-func New(client *http.Client) *Client {
+// New initiates client with default http client
+func New() *Client {
+	return NewWithClient(http.DefaultClient)
+}
+
+// NewWithClient initiates client with custom http client
+func NewWithClient(client *http.Client) *Client {
 	return &Client{client}
 }
 
-// IsLeap Проверка года на високосность
+// IsLeap checks if year is leap
 func (c *Client) IsLeap(year int) (bool, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/isleap?year=%d", year)
 	method := "GET"
@@ -26,7 +31,7 @@ func (c *Client) IsLeap(year int) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
-	res, err := c.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return false, fmt.Errorf("client.Do(req) failed: %v", err)
 	}
@@ -49,7 +54,7 @@ var boolToInt = map[bool]int{
 	true:  1,
 }
 
-// Params параметры запроса
+// Params contains various filters for request
 type Params struct {
 	Year        int
 	Month       *time.Month
@@ -57,10 +62,10 @@ type Params struct {
 	CountryCode *CountryCode
 	Pre         *bool
 	Covid       *bool
+	TZ          *string
 }
 
-// GetBy Получение данных за определенное время (год, месяц, день)
-// https://isdayoff.ru/api/getdata?year=YYYY&month=MM&day=DD[&cc=xx&pre=[0|1]&covid=[0|1]]
+// GetBy Get data by particular params
 func (c *Client) GetBy(params Params) ([]DayType, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?year=%d", params.Year)
 	if params.Month != nil {
@@ -86,12 +91,15 @@ func (c *Client) GetBy(params Params) ([]DayType, error) {
 	if params.Covid != nil {
 		url += fmt.Sprintf("&covid=%d", boolToInt[*params.Covid])
 	}
+	if params.TZ != nil {
+		url += fmt.Sprintf("&tz=%s", *params.TZ)
+	}
 	method := "GET"
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
-	res, err := c.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("client.Do(req) failed: %v", err)
 	}
