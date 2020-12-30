@@ -31,6 +31,7 @@ func (c *Client) IsLeap(year int) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
+	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.0 (https://github.com/anatoliyfedorenko)")
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return false, fmt.Errorf("client.Do(req) failed: %v", err)
@@ -68,6 +69,7 @@ type Params struct {
 // GetBy Get data by particular params
 func (c *Client) GetBy(params Params) ([]DayType, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?year=%d", params.Year)
+	// ugly. change it later
 	if params.Month != nil {
 		if *params.Month < 10 {
 			url += fmt.Sprintf("&month=0%d", *params.Month)
@@ -99,6 +101,9 @@ func (c *Client) GetBy(params Params) ([]DayType, error) {
 	if err != nil {
 		return nil, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
+
+	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.0 (https://github.com/anatoliyfedorenko)")
+
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("client.Do(req) failed: %v", err)
