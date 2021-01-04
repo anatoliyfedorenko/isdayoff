@@ -49,3 +49,41 @@ func TestGetByDay(t *testing.T) {
 		t.Errorf("should be 1, equal: %v", len(days))
 	}
 }
+
+func TestToday(t *testing.T) {
+	client := New()
+	countryCode := CountryCodeKazakhstan
+	pre := false
+	covid := false
+	day, err := client.Today(Params{
+		CountryCode: &countryCode,
+		Pre:         &pre,
+		Covid:       &covid,
+	})
+	if err != nil {
+		t.Error(err)
+	}
+	// This is a dynamicly set parameter, so it can vary from day to day.
+	if *day != DayTypeNonWorking {
+		t.Error("should be non working")
+	}
+}
+
+func TestTomorrow(t *testing.T) {
+	client := New()
+	countryCode := CountryCodeKazakhstan
+	pre := false
+	covid := false
+	day, err := client.Tomorrow(Params{
+		CountryCode: &countryCode,
+		Pre:         &pre,
+		Covid:       &covid,
+	})
+	if err != nil {
+		t.Error(err)
+	}
+	// This is a dynamicly set parameter, so it can vary from day to day.
+	if *day != DayTypeWorking {
+		t.Errorf("should be %v, instead: %v", DayTypeWorking, *day)
+	}
+}

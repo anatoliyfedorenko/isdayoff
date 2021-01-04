@@ -30,3 +30,6 @@ go get -u github.com/anatoliyfedorenko/isdayoff
 
 ## Note: 
 - TZ names should be taken from [IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)
+
+## TODO: 
+- Add examples
