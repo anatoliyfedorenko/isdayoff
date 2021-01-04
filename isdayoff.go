@@ -158,7 +158,7 @@ func (c *Client) aliasRequest(alias string, params Params) (*DayType, error) {
 
 	req.URL.RawQuery = q.Encode()
 
-	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.0 (https://github.com/anatoliyfedorenko)")
+	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.2 (https://github.com/anatoliyfedorenko)")
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
