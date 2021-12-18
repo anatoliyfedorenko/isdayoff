@@ -154,7 +154,7 @@ func (c *Client) GetByRange(params ParamsRange) ([]DayType, error) {
 	} else {
 		url += fmt.Sprintf("%d", *params.AfterMonth)
 	}
-	if *params.BeforeDay < 10 {
+	if *params.AfterDay < 10 {
 		url += fmt.Sprintf("0%d", *params.AfterDay)
 	} else {
 		url += fmt.Sprintf("%d", *params.AfterDay)

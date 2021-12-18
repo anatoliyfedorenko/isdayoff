@@ -16,6 +16,45 @@ func TestIsLeap(t *testing.T) {
 	}
 }
 
+func TestGetByRange(t *testing.T) {
+	client := New()
+	countryCode := CountryCodeRussia
+	pre := false
+	covid := false
+	ay := 2021
+	am := time.January
+	ad := 1
+	by := 2021
+	bm := time.January
+	bd := 15
+
+	day, err := client.GetByRange(ParamsRange{
+		AfterYear:   &ay,
+		AfterMonth:  &am,
+		AfterDay:    &ad,
+		BeforeYear:  &by,
+		BeforeMonth: &bm,
+		BeforeDay:   &bd,
+		Params: Params{
+			CountryCode: &countryCode,
+			Pre:         &pre,
+			Covid:       &covid,
+		},
+	})
+	if err != nil {
+		t.Error(err)
+	}
+	if len(day) < bd {
+		t.Errorf("should be 15, equal: %v", len(day))
+	}
+	if day[0] != DayTypeNonWorking {
+		t.Errorf("should be 1, equal: %v", day[0])
+	}
+	if day[14] != DayTypeWorking {
+		t.Errorf("should be 0, equal: %v", day[14])
+	}
+}
+
 func TestGetByYear(t *testing.T) {
 	client := New()
 	days, err := client.GetBy(Params{Year: 2020})
