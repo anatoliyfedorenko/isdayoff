@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"runtime/debug"
 	"strings"
 	"time"
 )
@@ -23,6 +24,21 @@ func NewWithClient(client *http.Client) *Client {
 	return &Client{client}
 }
 
+func LibVersion() string {
+	bi, ok := debug.ReadBuildInfo()
+	if !ok {
+		fmt.Println("Can't read build info")
+		return "0.0.0"
+	}
+	for _, dep := range bi.Deps {
+		if dep.Path == PkgRepoUrl {
+			return dep.Version
+		}
+	}
+	fmt.Println("Can't get pkg version")
+	return "0.0.0"
+}
+
 // IsLeap checks if year is leap
 func (c *Client) IsLeap(year int) (bool, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/isleap?year=%d", year)
@@ -30,7 +46,7 @@ func (c *Client) IsLeap(year int) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
-	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.0 (https://github.com/anatoliyfedorenko)")
+	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s (%s)", PkgLibName, LibVersion(), PkgRepoUrl))
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return false, fmt.Errorf("client.Do(req) failed: %v", err)
@@ -110,7 +126,7 @@ func (c *Client) GetBy(params Params) ([]DayType, error) {
 		return nil, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
 
-	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.0 (https://github.com/anatoliyfedorenko)")
+	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s (%s)", PkgLibName, LibVersion(), PkgRepoUrl))
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -189,7 +205,7 @@ func (c *Client) GetByRange(params ParamsRange) ([]DayType, error) {
 		return nil, fmt.Errorf("http.NewRequest failed: %v", err)
 	}
 
-	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.3 (https://github.com/rageofgods/isdayoff)")
+	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s (%s)", PkgLibName, LibVersion(), PkgRepoUrl))
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -248,7 +264,7 @@ func (c *Client) aliasRequest(alias string, params Params) (*DayType, error) {
 
 	req.URL.RawQuery = q.Encode()
 
-	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.2 (https://github.com/anatoliyfedorenko)")
+	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s (%s)", PkgLibName, LibVersion(), PkgRepoUrl))
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
