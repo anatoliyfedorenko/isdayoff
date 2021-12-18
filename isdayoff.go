@@ -31,7 +31,7 @@ func LibVersion() string {
 		return "0.0.0"
 	}
 	for _, dep := range bi.Deps {
-		if dep.Path == PkgRepoUrl {
+		if strings.Contains(dep.Path, PkgRepoUrl) {
 			return dep.Version
 		}
 	}

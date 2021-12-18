@@ -18,7 +18,7 @@ Then, reference isdayoff module in a Go program with `import`:
 
 ``` go
 import (
-    "github.com/anatoliyfedorenko/isdayoff"
+    "github.com/rageofgods/isdayoff"
 )
 ```
 
@@ -38,19 +38,43 @@ package main
 
 import (
 	"fmt"
-	"github.com/anatoliyfedorenko/isdayoff"
+	"github.com/rageofgods/isdayoff"
+)
+
+package main
+
+import (
+"fmt"
+"github.com/rageofgods/isdayoff"
+"time"
 )
 
 func main() {
 	dayOff := isdayoff.New()
-	countryCode := CountryCodeKazakhstan
+	countryCode := isdayoff.CountryCodeRussia
 	pre := false
 	covid := false
-	day, err := dayOff.Tomorrow(Params{
-		CountryCode: &countryCode,
-		Pre:         &pre,
-		Covid:       &covid,
-	})    
+	tn := time.Now()
+	ay, by := tn.Year()
+	am, bm := tn.Month()
+	ad := tn.Day()
+	bd := tn.AddDate(0, 0, 10).Day()
+	day, err := dayOff.GetByRange(isdayoff.ParamsRange{
+		AfterYear: &ay,
+		AfterMonth: &am,
+		AfterDay: &ad,
+		BeforeYear: &by,
+		BeforeMonth: &bm,
+		BeforeDay: &bd,
+		Params: isdayoff.Params{
+			CountryCode: &countryCode,
+			Pre:         &pre,
+			Covid:       &covid,
+		},
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	fmt.Println(day) // 0
 }
