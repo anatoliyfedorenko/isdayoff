@@ -65,6 +65,16 @@ type Params struct {
 	TZ          *string
 }
 
+type ParamsRange struct {
+	Params
+	AfterYear   *int
+	AfterMonth  *time.Month
+	AfterDay    *int
+	BeforeYear  *int
+	BeforeMonth *time.Month
+	BeforeDay   *int
+}
+
 // GetBy Get data by particular params
 func (c *Client) GetBy(params Params) ([]DayType, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?year=%d", params.Year)
@@ -117,6 +127,86 @@ func (c *Client) GetBy(params Params) ([]DayType, error) {
 		return nil, fmt.Errorf(string(body))
 	}
 	result := []DayType{}
+
+	days := strings.Split(string(body), "")
+	for _, day := range days {
+		result = append(result, DayType(day))
+	}
+
+	return result, nil
+}
+
+// GetByRange Get data by particular params with date range provided
+func (c *Client) GetByRange(params ParamsRange) ([]DayType, error) {
+	if params.AfterYear == nil ||
+		params.AfterMonth == nil ||
+		params.AfterDay == nil ||
+		params.BeforeYear == nil ||
+		params.BeforeMonth == nil ||
+		params.BeforeDay == nil {
+		return nil, fmt.Errorf("need to define all of ParamsRange{} values")
+	}
+
+	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?date1=%d", *params.AfterYear)
+	// ugly. change it later :)
+	if *params.AfterMonth < 10 {
+		url += fmt.Sprintf("0%d", *params.AfterMonth)
+	} else {
+		url += fmt.Sprintf("%d", *params.AfterMonth)
+	}
+	if *params.BeforeDay < 10 {
+		url += fmt.Sprintf("0%d", *params.AfterDay)
+	} else {
+		url += fmt.Sprintf("%d", *params.AfterDay)
+	}
+
+	url += fmt.Sprintf("&date2=%d", *params.BeforeYear)
+	if *params.BeforeMonth < 10 {
+		url += fmt.Sprintf("0%d", *params.BeforeMonth)
+	} else {
+		url += fmt.Sprintf("%d", *params.BeforeMonth)
+	}
+	if *params.BeforeDay < 10 {
+		url += fmt.Sprintf("0%d", *params.BeforeDay)
+	} else {
+		url += fmt.Sprintf("%d", *params.BeforeDay)
+	}
+
+	if params.CountryCode != nil {
+		url += fmt.Sprintf("&cc=%v", *params.CountryCode)
+	}
+	if params.Pre != nil {
+		url += fmt.Sprintf("&pre=%s", boolToStr[*params.Pre])
+	}
+	if params.Covid != nil {
+		url += fmt.Sprintf("&covid=%s", boolToStr[*params.Covid])
+	}
+	if params.TZ != nil {
+		url += fmt.Sprintf("&tz=%s", *params.TZ)
+	}
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("http.NewRequest failed: %v", err)
+	}
+
+	req.Header.Set("User-Agent", "isdayoff-golang-lib/1.0.3 (https://github.com/rageofgods/isdayoff)")
+
+	res, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("client.Do(req) failed: %v", err)
+	}
+
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, fmt.Errorf("ioutil.ReadAll failed: %v", err)
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(string(body))
+	}
+	var result []DayType
 
 	days := strings.Split(string(body), "")
 	for _, day := range days {
