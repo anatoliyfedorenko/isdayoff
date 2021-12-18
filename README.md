@@ -28,7 +28,7 @@ toolchain will resolve and fetch module automatically.
 Alternatively, you can also explicitly `go get` the package:
 
 ```
-go get -u github.com/anatoliyfedorenko/isdayoff
+go get -u github.com/rageofgods/isdayoff
 ```
 
 ## Example

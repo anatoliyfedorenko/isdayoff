@@ -53,7 +53,8 @@ const (
 )
 
 const (
-	// HTTP Client header repo URL. Original https://github.com/anatoliyfedorenko
-	PkgRepoUrl = "https://github.com/rageofgods"
-	PkgLibName = "isdayoff-golang-lib"
+	// PkgRepoUrl HTTP Client header repo URL. Original https://github.com/anatoliyfedorenko
+	PkgRepoUrl    = "https://github.com/rageofgods"
+	PkgLibName    = "isdayoff-golang-lib"
+	PkgLibVersion = "1.0.3"
 )
